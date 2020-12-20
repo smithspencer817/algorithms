@@ -1,16 +1,31 @@
-function binarySearch(array, target) {
-    return binarySearchHelper(array, target, 0, array.length - 1)
-  }
-  
-  function binarySearchHelper(array, target, left, right) {
-      if (left > right) return -1;
-      const middle = Math.floor((left + right) / 2);
-      const potentialMatch = array[middle];
-      if (target === potentialMatch) {
-          return middle;
-      } else if (target < potentialMatch) {
-          return binarySearchHelper(array, target, left, middle - 1)
-      } else {
-          return binarySearchHelper(array, target, middle + 1, right);
-      }
-  }
+function quickSort(array) {
+	quickSortHelper(array, 0, array.length - 1);
+	return array;
+}
+
+function quickSortHelper(array, startIdx, endIdx) {
+	if (startIdx >= endIdx) return;
+	let pivot = startIdx;
+	let left = startIdx + 1;
+	let right = endIdx;
+	while (right >= left) {
+		if (array[left] > array[pivot] && array[right] < array[pivot]) {
+			swap(left, right, array)
+		}
+		if (array[left] <= array[pivot]) left++
+		if (array[right] >= array[pivot]) right--;
+	}
+	swap(pivot, right, array)
+	let leftSubarrayIsSmaller = right - 1 - startIdx < endIdx - (right + 1)
+	if (leftSubarrayIsSmaller) {
+		quickSortHelper(array, startIdx, right - 1)
+		quickSortHelper(array, right + 1, endIdx)
+	} else {
+		quickSortHelper(array, right + 1, endIdx)
+		quickSortHelper(array, startIdx, right - 1)
+	}
+}
+
+function swap(i, j, a) {
+	[a[i], a[j]] = [a[j], a[i]]
+}
